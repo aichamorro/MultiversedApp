@@ -7,15 +7,20 @@
 //
 
 import UIKit
+import AppComponent
+import TheFeedComponent
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-
+    var components = [AppComponent]()
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        components.append(TheFeedComponent())
+        UIApplication.shared.open(URL(string: "hudl://feed")!, options: [:])
+        
         return true
     }
 
@@ -40,7 +45,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
-
+    
+    func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
+        return components.reduce(false) {
+            return $0 == true ? $0 : $1.open(url: url) {
+                self.window?.rootViewController = $0
+            }
+        }
+    }
 
 }
 
