@@ -11,4 +11,5 @@ target 'MultiversedApp' do
   # Pods for MultiversedApp
   pod 'AppComponent'
   pod 'TheFeedComponent'
+  pod 'HudlLog/Implementation'
 end
